@@ -11,9 +11,18 @@ const startBot = () => {
     return;
   }
 
-  // Polling means the bot fetches updates
-  bot = new TelegramBot(token, { polling: true });
-  console.log('🤖 Telegram Bot started in Polling mode.');
+  // Use polling only in development, webhooks in production
+  const isProduction = process.env.NODE_ENV === 'production';
+  
+  if (isProduction) {
+    // In production, don't use polling to avoid conflicts
+    bot = new TelegramBot(token, { polling: false });
+    console.log('🤖 Telegram Bot initialized (webhook mode).');
+  } else {
+    // In development, use polling
+    bot = new TelegramBot(token, { polling: true });
+    console.log('🤖 Telegram Bot started in Polling mode.');
+  }
 
   // Handle /start <token>
   bot.onText(/\/start (.+)/, async (msg, match) => {
