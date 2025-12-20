@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+    - uses: actions/checkout@v3
+
+    # Backend Setup
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    
+    - name: Install Dependencies
+      run: npm install
+
+    # Build Frontend
+    - name: Install Client Dependencies
+      working-directory: ./client
+      run: npm install
+
+    - name: Build Frontend
+      working-directory: ./client
+      run: npm run build
+
+    # Clean up (Optional - verify not dirty after build if committing artifacts, but here we just verify build passes)
+    - name: Verify Build
+      run: echo "Build Successful"

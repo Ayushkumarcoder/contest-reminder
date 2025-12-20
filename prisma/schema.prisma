@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Contest {
+  id           String   @id @default(uuid())
+  platform     String
+  name         String
+  startTime    DateTime
+  endTime      DateTime
+  durationMin  Int
+  url          String
+  isRated      Boolean
+  isWatched    Boolean  @default(false)
+  reminderSent Boolean  @default(false) // Legacy
+  sentNotifications Int[] @default([])
+
+  userContests UserContest[]
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@unique([platform, name, startTime])
+}
+
+model User {
+  id            String   @id @default(uuid())
+  email         String   @unique
+  name          String?
+  googleId      String?  @unique
+
+  accessToken   String?
+  refreshToken  String?
+  tokenExpiry   DateTime?
+  googleIdString String?  @unique // For debug/manual
+
+  // Telegram - Per User
+  telegramChatId       String?  @unique
+  telegramConnectToken String?  @unique // For /start <token> linking flow
+
+  // Defines how many minutes before contest to remind (e.g. [60, 15])
+  remindBefore  Int[]    @default([60, 15]) 
+
+  userContests  UserContest[]
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model UserContest {
+  id              String   @id @default(uuid())
+  userId          String
+  contestId       String
+  syncCalendar    Boolean  @default(false)
+  calendarEventId String?  // Stores Google Event ID for deletion
+  notify          Boolean  @default(true) // Personal notification override
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user    User    @relation(fields: [userId], references: [id])
+  contest Contest @relation(fields: [contestId], references: [id])
+  @@unique([userId, contestId])
+}
