@@ -35,6 +35,15 @@ app.use('/api/contests', contestsRouter);
 app.use('/calendar', calendarRouter);
 app.use('/api/telegram', telegramRouter);
 
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error('Error:', err);
+  res.status(500).json({ 
+    error: 'Internal Server Error',
+    message: process.env.NODE_ENV === 'production' ? 'Something went wrong' : err.message 
+  });
+});
+
 // Serve React App for any other route (SPA Fallback)
 app.get(/(.*)/, (req, res) => {
   res.sendFile(path.join(__dirname, '../client/dist/index.html'));
