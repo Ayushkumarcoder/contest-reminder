@@ -3,7 +3,7 @@ import './TermsOfService.css';
 
 const TermsOfService = () => {
   return (
-    <div className="legal-page-container">
+    <div className="legal-page-container" style={{ flex: 1 }}>
       <div className="legal-content">
         <h1>Terms of Service</h1>
         <p className="last-updated">Last Updated: January 4, 2026</p>

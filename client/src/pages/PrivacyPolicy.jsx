@@ -3,7 +3,7 @@ import './PrivacyPolicy.css';
 
 const PrivacyPolicy = () => {
   return (
-    <div className="legal-page-container">
+    <div className="legal-page-container" style={{ flex: 1 }}>
       <div className="legal-content">
         <h1>Privacy Policy</h1>
         <p className="last-updated">Last Updated: January 4, 2026</p>

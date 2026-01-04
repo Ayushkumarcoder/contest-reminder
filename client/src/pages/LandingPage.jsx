@@ -2,7 +2,7 @@ import React from 'react';
 
 const LandingPage = () => {
   const heroStyle = {
-    minHeight: '100vh',
+    minHeight: 'calc(100vh - 140px)', // Subtract navbar and footer height
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',

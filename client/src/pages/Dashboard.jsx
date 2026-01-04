@@ -105,7 +105,7 @@ function Dashboard({ user }) {
   });
 
   return (
-    <div className="container" style={{ padding: '2rem' }}>
+    <div className="container" style={{ padding: '2rem', flex: 1, background: '#0f172a', minHeight: 'calc(100vh - 140px)' }}>
       <header style={{ marginBottom: '3rem', textAlign: 'center' }}>
         <h1 style={{ 
           fontSize: '2.5rem', 
@@ -149,17 +149,6 @@ function Dashboard({ user }) {
           >
             {telegramStatus.connected ? '✅ Telegram Linked' : '✈️ Connect Telegram'}
           </button>
-              
-          <a
-            href="/auth/logout"
-            style={{
-              ...buttonStyle('rgba(239, 68, 68, 0.2)', '#f87171'),
-              textDecoration: 'none',
-              display: 'inline-block'
-            }}
-          >
-            🚪 Logout
-          </a>
 
         </div>
       </header>

@@ -3,6 +3,10 @@ import axios from 'axios';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
 import Dashboard from './pages/Dashboard';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsOfService from './pages/TermsOfService';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -38,18 +42,30 @@ function App() {
 
   return (
     <Router>
-      <Routes>
-        <Route 
-          path="/" 
-          element={user ? <Navigate to="/dashboard" /> : <LandingPage />} 
-        />
-        <Route 
-          path="/dashboard" 
-          element={user ? <Dashboard user={user} /> : <Navigate to="/" />} 
-        />
-        {/* Fallback */}
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
+      <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+        <Navbar user={user} />
+        <Routes>
+          <Route 
+            path="/" 
+            element={user ? <Navigate to="/dashboard" /> : <LandingPage />} 
+          />
+          <Route 
+            path="/dashboard" 
+            element={user ? <Dashboard user={user} /> : <Navigate to="/" />} 
+          />
+          <Route 
+            path="/privacy-policy" 
+            element={<PrivacyPolicy />} 
+          />
+          <Route 
+            path="/terms-of-service" 
+            element={<TermsOfService />} 
+          />
+          {/* Fallback */}
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+        <Footer />
+      </div>
     </Router>
   );
 }
